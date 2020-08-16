@@ -1014,11 +1014,12 @@ function () {
 
   _proto.proxyRequest = function proxyRequest(data) {
     // For implementations using the csrf mitigation
-    var token = localStorage.getItem('tinacms-github-token') || null;
+    // const token = localStorage.getItem('tinacms-github-token') || null
+    var token = localStorage.getItem('github-access-token') || null;
     var headers = new Headers();
 
     if (token) {
-      headers.append('Authorization', 'Bearer ' + token);
+      headers.append('Authorization', 'token ' + token);
     } else {
       console.warn('Deprecation Notice: You are using an old authentication flow, please migrate to the new one (see https://tinacms.org/blog/upgrade-notice-improved-github-security)');
     }
