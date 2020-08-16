@@ -816,7 +816,7 @@ function () {
     try {
       var _this13 = this;
 
-      console.log("creating branch");
+      console.log("creating branchhhh");
       return Promise.resolve(_this13.getBranch()).then(function (currentBranch) {
         var sha = currentBranch.object.sha;
         return _this13.req({
@@ -973,6 +973,7 @@ function () {
       var _this27 = this;
 
       return Promise.resolve(_this27.proxyRequest(data)).then(function (response) {
+        console.log(response);
         return _this27.getGithubResponse(response);
       });
     } catch (e) {
@@ -1024,6 +1025,7 @@ function () {
     // For implementations using the csrf mitigation
     // const token = localStorage.getItem('tinacms-github-token') || null
     var token = localStorage.getItem('github-access-token') || null;
+    console.log('github-access-token', token);
     var headers = new Headers();
 
     if (token) {
@@ -1032,6 +1034,7 @@ function () {
       console.warn('Deprecation Notice: You are using an old authentication flow, please migrate to the new one (see https://tinacms.org/blog/upgrade-notice-improved-github-security)');
     }
 
+    console.log('proxy urll', this.proxy);
     return fetch(this.proxy, {
       method: 'POST',
       headers: headers,

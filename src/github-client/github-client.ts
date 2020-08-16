@@ -228,7 +228,7 @@ export class GithubClient {
   }
 
   async createBranch(name: string) {
-    console.log("creating branch")
+    console.log("creating branchhhh")
     const currentBranch = await this.getBranch()
     const sha = currentBranch.object.sha
     return this.req({
@@ -334,6 +334,7 @@ export class GithubClient {
 
   protected async req(data: any) {
     const response = await this.proxyRequest(data)
+    console.log(response)
     return this.getGithubResponse(response)
   }
 
@@ -375,7 +376,7 @@ export class GithubClient {
     // For implementations using the csrf mitigation
     // const token = localStorage.getItem('tinacms-github-token') || null
     const token = localStorage.getItem('github-access-token') || null
-
+    console.log('github-access-token', token)
     const headers = new Headers()
 
     if (token) {
@@ -385,7 +386,7 @@ export class GithubClient {
         'Deprecation Notice: You are using an old authentication flow, please migrate to the new one (see https://tinacms.org/blog/upgrade-notice-improved-github-security)'
       )
     }
-
+    console.log('proxy urll', this.proxy)
     return fetch(this.proxy, {
       method: 'POST',
       headers: headers,
