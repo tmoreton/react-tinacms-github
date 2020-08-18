@@ -929,33 +929,29 @@ function () {
     } catch (e) {
       return Promise.reject(e);
     }
-  };
+  } // async upload(
+  //   path: string,
+  //   fileContents: string,
+  //   commitMessage: string = 'Update from TinaCMS',
+  //   encoded: boolean = false
+  // ) {
+  //   return this.githubFileApi(path, fileContents, commitMessage, encoded, 'PUT')
+  // }
+  ;
 
-  _proto.upload = function upload(path, fileContents, commitMessage, encoded) {
-    if (commitMessage === void 0) {
-      commitMessage = 'Update from TinaCMS';
-    }
-
-    if (encoded === void 0) {
-      encoded = false;
-    }
-
-    try {
-      var _this23 = this;
-
-      console.log('uploadingg ', fileContents);
-      return Promise.resolve(_this23.githubFileApi(path, fileContents, commitMessage, encoded, 'PUT'));
-    } catch (e) {
-      return Promise.reject(e);
-    }
+  _proto.upload = function upload(path, fileContents) {
+    return Promise.resolve({
+      path: path,
+      fileContents: fileContents
+    });
   };
 
   _proto["delete"] = function _delete(path, commitMessage) {
     try {
-      var _this25 = this;
+      var _this23 = this;
 
       if (commitMessage === undefined) commitMessage = "Deleted " + path + " using TinaCMS";
-      return Promise.resolve(_this25.githubFileApi(path, '', commitMessage, false, 'DELETE'));
+      return Promise.resolve(_this23.githubFileApi(path, '', commitMessage, false, 'DELETE'));
     } catch (e) {
       return Promise.reject(e);
     }
@@ -963,11 +959,11 @@ function () {
 
   _proto.req = function req(data) {
     try {
-      var _this27 = this;
+      var _this25 = this;
 
-      return Promise.resolve(_this27.proxyRequest(data)).then(function (response) {
+      return Promise.resolve(_this25.proxyRequest(data)).then(function (response) {
         console.log(response);
-        return _this27.getGithubResponse(response);
+        return _this25.getGithubResponse(response);
       });
     } catch (e) {
       return Promise.reject(e);
@@ -1081,12 +1077,12 @@ function (_Error) {
   _inheritsLoose(GithubError, _Error);
 
   function GithubError(message, status) {
-    var _this28;
+    var _this26;
 
-    _this28 = _Error.call(this, message) || this;
-    _this28.message = message;
-    _this28.status = status;
-    return _this28;
+    _this26 = _Error.call(this, message) || this;
+    _this26.message = message;
+    _this26.status = status;
+    return _this26;
   }
 
   return GithubError;

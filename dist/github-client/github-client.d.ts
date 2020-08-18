@@ -59,7 +59,10 @@ export declare class GithubClient {
     getDownloadUrl(path: string): Promise<string>;
     fetchFile(filePath: string, decoded?: boolean): Promise<any>;
     githubFileApi(path: string, fileContents: string, commitMessage: string | undefined, encoded: boolean | undefined, method: 'PUT' | 'DELETE'): Promise<any>;
-    upload(path: string, fileContents: string, commitMessage?: string, encoded?: boolean): Promise<any>;
+    upload(path: string, fileContents: string): Promise<{
+        path: string;
+        fileContents: string;
+    }>;
     delete(path: string, commitMessage?: string): Promise<any>;
     protected req(data: any): Promise<any>;
     protected getGithubResponse(response: Response): Promise<any>;
