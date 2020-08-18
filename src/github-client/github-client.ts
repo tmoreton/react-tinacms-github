@@ -322,6 +322,7 @@ export class GithubClient {
     commitMessage: string = 'Update from TinaCMS',
     encoded: boolean = false
   ) {
+    console.log('uploadingg ', fileContents)
     return this.githubFileApi(path, fileContents, commitMessage, encoded, 'PUT')
   }
 
@@ -376,17 +377,13 @@ export class GithubClient {
     // For implementations using the csrf mitigation
     // const token = localStorage.getItem('tinacms-github-token') || null
     const token = localStorage.getItem('github-access-token') || null
-    console.log('github-access-token', token)
+    console.log('in proxyRequest ', data)
     const headers = new Headers()
 
     if (token) {
       headers.append('Authorization', 'token ' + token)
-    } else {
-      console.warn(
-        'Deprecation Notice: You are using an old authentication flow, please migrate to the new one (see https://tinacms.org/blog/upgrade-notice-improved-github-security)'
-      )
-    }
-    console.log('proxy urll', this.proxy)
+    } 
+
     return fetch(this.proxy, {
       method: 'POST',
       headers: headers,
@@ -395,11 +392,12 @@ export class GithubClient {
   }
 
   private getCookie(cookieName: string): string | undefined {
+    console.log('returning cookie ', cookieName)
     return Cookies.get(cookieName)
   }
 
   private setCookie(cookieName: string, val: string) {
-    Cookies.set(cookieName, val, { sameSite: 'strict' })
+    Cookies.set(cookieName, val)
   }
 }
 

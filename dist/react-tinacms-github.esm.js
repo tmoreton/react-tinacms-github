@@ -943,6 +943,7 @@ function () {
     try {
       var _this23 = this;
 
+      console.log('uploadingg ', fileContents);
       return Promise.resolve(_this23.githubFileApi(path, fileContents, commitMessage, encoded, 'PUT'));
     } catch (e) {
       return Promise.reject(e);
@@ -1017,16 +1018,13 @@ function () {
     // For implementations using the csrf mitigation
     // const token = localStorage.getItem('tinacms-github-token') || null
     var token = localStorage.getItem('github-access-token') || null;
-    console.log('github-access-token', token);
+    console.log('in proxyRequest ', data);
     var headers = new Headers();
 
     if (token) {
       headers.append('Authorization', 'token ' + token);
-    } else {
-      console.warn('Deprecation Notice: You are using an old authentication flow, please migrate to the new one (see https://tinacms.org/blog/upgrade-notice-improved-github-security)');
     }
 
-    console.log('proxy urll', this.proxy);
     return fetch(this.proxy, {
       method: 'POST',
       headers: headers,
@@ -1035,13 +1033,12 @@ function () {
   };
 
   _proto.getCookie = function getCookie(cookieName) {
+    console.log('returning cookie ', cookieName);
     return Cookies.get(cookieName);
   };
 
   _proto.setCookie = function setCookie(cookieName, val) {
-    Cookies.set(cookieName, val, {
-      sameSite: 'strict'
-    });
+    Cookies.set(cookieName, val);
   };
 
   _createClass(GithubClient, [{
