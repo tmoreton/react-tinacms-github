@@ -929,29 +929,32 @@ function () {
     } catch (e) {
       return Promise.reject(e);
     }
-  } // async upload(
-  //   path: string,
-  //   fileContents: string,
-  //   commitMessage: string = 'Update from TinaCMS',
-  //   encoded: boolean = false
-  // ) {
-  //   return this.githubFileApi(path, fileContents, commitMessage, encoded, 'PUT')
-  // }
-  ;
+  };
 
-  _proto.upload = function upload(path, fileContents) {
-    return Promise.resolve({
-      path: path,
-      fileContents: fileContents
-    });
+  _proto.upload = function upload(path, fileContents, commitMessage, encoded) {
+    if (commitMessage === void 0) {
+      commitMessage = 'Update from TinaCMS';
+    }
+
+    if (encoded === void 0) {
+      encoded = false;
+    }
+
+    try {
+      var _this23 = this;
+
+      return Promise.resolve(_this23.githubFileApi(path, fileContents, commitMessage, encoded, 'PUT'));
+    } catch (e) {
+      return Promise.reject(e);
+    }
   };
 
   _proto["delete"] = function _delete(path, commitMessage) {
     try {
-      var _this23 = this;
+      var _this25 = this;
 
       if (commitMessage === undefined) commitMessage = "Deleted " + path + " using TinaCMS";
-      return Promise.resolve(_this23.githubFileApi(path, '', commitMessage, false, 'DELETE'));
+      return Promise.resolve(_this25.githubFileApi(path, '', commitMessage, false, 'DELETE'));
     } catch (e) {
       return Promise.reject(e);
     }
@@ -959,11 +962,11 @@ function () {
 
   _proto.req = function req(data) {
     try {
-      var _this25 = this;
+      var _this27 = this;
 
-      return Promise.resolve(_this25.proxyRequest(data)).then(function (response) {
+      return Promise.resolve(_this27.proxyRequest(data)).then(function (response) {
         console.log(response);
-        return _this25.getGithubResponse(response);
+        return _this27.getGithubResponse(response);
       });
     } catch (e) {
       return Promise.reject(e);
@@ -1077,12 +1080,12 @@ function (_Error) {
   _inheritsLoose(GithubError, _Error);
 
   function GithubError(message, status) {
-    var _this26;
+    var _this28;
 
-    _this26 = _Error.call(this, message) || this;
-    _this26.message = message;
-    _this26.status = status;
-    return _this26;
+    _this28 = _Error.call(this, message) || this;
+    _this28.message = message;
+    _this28.status = status;
+    return _this28;
   }
 
   return GithubError;
@@ -2649,6 +2652,43 @@ function () {
       });
 
       return Promise.resolve(_temp3 && _temp3.then ? _temp3.then(function () {
+        return uploaded;
+      }) : uploaded);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+  _proto.callback = function callback(files) {
+    try {
+      var uploaded = [];
+
+      var _temp6 = _forOf(files, function (_ref2) {
+        var file = _ref2.file,
+            directory = _ref2.directory;
+        var path = directory.charAt(0) === '/' ? (directory + file.name).slice(1) // drop the first '/'
+        : directory + file.name;
+
+        var _temp4 = _catch(function () {
+          return Promise.resolve(base64File(file)).then(function (_base64File2) {
+            var content = _base64File2.toString().split(',')[1];
+
+            // only need the data piece
+            uploaded.push({
+              directory: directory,
+              filename: file.name,
+              content: content,
+              path: path
+            });
+          });
+        }, function (e) {
+          console.warn('Failed to upload content to Github: ' + e);
+        });
+
+        if (_temp4 && _temp4.then) return _temp4.then(function () {});
+      });
+
+      return Promise.resolve(_temp6 && _temp6.then ? _temp6.then(function () {
         return uploaded;
       }) : uploaded);
     } catch (e) {

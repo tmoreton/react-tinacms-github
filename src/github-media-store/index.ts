@@ -51,6 +51,31 @@ export class GithubMediaStore implements MediaStore {
     return uploaded
   }
 
+  async callback(files: any) {
+    const uploaded = []
+    for (const { file, directory } of files) {
+      const path =
+        directory.charAt(0) === '/'
+          ? (directory + file.name).slice(1) // drop the first '/'
+          : directory + file.name
+
+      try {
+        const content = (await base64File(file)).toString().split(',')[1] // only need the data piece
+
+        uploaded.push({
+          directory: directory,
+          filename: file.name,
+          content: content,
+          path: path
+        })
+      } catch (e) {
+        console.warn('Failed to upload content to Github: ' + e)
+      }
+    }
+
+    return uploaded
+  }
+
   async previewSrc(src: string) {
     try {
       return this.githubClient.getDownloadUrl(src)

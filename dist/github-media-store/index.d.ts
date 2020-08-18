@@ -22,5 +22,11 @@ export declare class GithubMediaStore implements MediaStore {
     accept: string;
     constructor(githubClient: GithubClient);
     persist(files: MediaUploadOptions[]): Promise<Media[]>;
+    callback(files: any): Promise<{
+        directory: any;
+        filename: any;
+        content: string;
+        path: any;
+    }[]>;
     previewSrc(src: string): Promise<string>;
 }

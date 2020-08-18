@@ -316,20 +316,13 @@ export class GithubClient {
     })
   }
 
-  // async upload(
-  //   path: string,
-  //   fileContents: string,
-  //   commitMessage: string = 'Update from TinaCMS',
-  //   encoded: boolean = false
-  // ) {
-  //   return this.githubFileApi(path, fileContents, commitMessage, encoded, 'PUT')
-  // }
-
   async upload(
     path: string,
-    fileContents: string
+    fileContents: string,
+    commitMessage: string = 'Update from TinaCMS',
+    encoded: boolean = false
   ) {
-    return { path: path, fileContents: fileContents }
+    return this.githubFileApi(path, fileContents, commitMessage, encoded, 'PUT')
   }
 
   async delete(
